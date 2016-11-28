@@ -1,0 +1,70 @@
+MPLINK 5.08, LINKER
+Linker Map File - Created Mon Nov 28 11:36:23 2016
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x001000    program   0x000004
+                   .cinit    romdata   0x001004    program   0x000002
+                   .org_1       code   0x001008    program   0x000004
+                   .org_2       code   0x001018    program   0x000004
+                   .org_3       code   0x001020    program   0x0000be
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x001000    0x001005      
+                            0x001008    0x00100b      
+                            0x001018    0x00101b      
+                            0x001020    0x0010dd      
+            204 out of 33048 program addresses used, program memory utilization is 0%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                    Delay   0x0010c2    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                    START   0x001020    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+              choosestate   0x001078    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                  falling   0x0010b0    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                     idle   0x00108c    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+               inter_high   0x0010d0    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                inter_low   0x0010da    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                     left   0x001074    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                motorauto   0x001056    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                motoridle   0x001046    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+              motormanual   0x00106c    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                    right   0x001070    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                   rising   0x00109e    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                   state1   0x00107c    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                   state2   0x001080    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                   state3   0x001084    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                   state4   0x001088    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                    START   0x001020    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                motoridle   0x001046    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                motorauto   0x001056    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+              motormanual   0x00106c    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                    right   0x001070    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                     left   0x001074    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+              choosestate   0x001078    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                   state1   0x00107c    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                   state2   0x001080    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                   state3   0x001084    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                   state4   0x001088    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                     idle   0x00108c    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                   rising   0x00109e    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                  falling   0x0010b0    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                    Delay   0x0010c2    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+               inter_high   0x0010d0    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+                inter_low   0x0010da    program     static D:\Yentl\Documenten\repos\microproclabassembly\FSM.X\AsmTemplate.asm
+
+
