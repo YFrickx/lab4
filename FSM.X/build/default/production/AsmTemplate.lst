@@ -1,4 +1,4 @@
-MPASM 5.63                   ASMTEMPLATE.ASM   11-28-2016  11:36:22         PAGE  1
+MPASM 5.66                   ASMTEMPLATE.ASM   11-30-2016  15:50:01         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -14,10 +14,10 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00001         LIST
                       00002 
                       00003 ;==========================================================================
-                      00004 ; Build date : Aug 13 2015
+                      00004 ; Build date : Feb 01 2016
                       00005 ;  MPASM PIC18F2550 processor include
                       00006 ; 
-                      00007 ;  (c) Copyright 1999-2015 Microchip Technology, All rights reserved
+                      00007 ;  (c) Copyright 1999-2016 Microchip Technology, All rights reserved
                       00008 ;==========================================================================
                       00009 
                       01578         LIST
@@ -25,164 +25,234 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
   00000021            00009 SAMPLE equ  0x21
   00000022            00010 COUNT equ  0x22
   00000023            00011 COUNT2 equ 0x23
-  00000024            00012 LEFT equ 0x24
-  00000025            00013 STATE equ 0x25
-                      00014 
-                      00015 ;***********************************************************
-                      00016 ; Reset Vector
-                      00017 ;***********************************************************
-                      00018 
-                      00019     ORG     0x1000    ; Reset Vector
-                      00020                      ; When debugging:0x000; when loading: 0x800
-001000 EF?? F???      00021     GOTO    START
-                      00022 
+  00000026            00012 COUNT3 equ  0x26
+  00000024            00013 LEFT equ 0x24
+  00000025            00014 STATE equ 0x25
+                      00015 
+                      00016 ;***********************************************************
+                      00017 ; Reset Vector
+                      00018 ;***********************************************************
+                      00019 
+                      00020     ORG     0x1000    ; Reset Vector
+                      00021                      ; When debugging:0x000; when loading: 0x800
+001000 EF?? F???      00022     GOTO    START
                       00023 
-                      00024 ;***********************************************************
-                      00025 ; Interrupt Vector
-                      00026 ;***********************************************************
-                      00027 
+                      00024 
+                      00025 ;***********************************************************
+                      00026 ; Interrupt Vector
+                      00027 ;***********************************************************
                       00028 
                       00029 
-                      00030     ORG     0x1008      ; Interrupt Vector  HIGH priority
-001008 EF?? F???      00031     GOTO    inter_high  ; When debugging:0x008; when loading: 0x808
-                      00032     ORG     0x1018      ; Interrupt Vector  HIGH priority
-001018 EF?? F???      00033     GOTO    inter_low   ; When debugging:0x008; when loading: 0x808
-                      00034 
+                      00030 
+                      00031     ORG     0x1008      ; Interrupt Vector  HIGH priority
+001008 EF?? F???      00032     GOTO    inter_high  ; When debugging:0x008; when loading: 0x808
+                      00033     ORG     0x1018      ; Interrupt Vector  HIGH priority
+001018 EF?? F???      00034     GOTO    inter_low   ; When debugging:0x008; when loading: 0x808
                       00035 
                       00036 
-                      00037 ;***********************************************************
-                      00038 ; Program Code Starts Here
-                      00039 ;***********************************************************
-                      00040 
-                      00041     ORG     0x1020              ; When debugging:0x020; when loading: 0x820
-                      00042 
-001020                00043 START
-                      00044 
-001020 6A80           00045     clrf    PORTA               ; Initialize PORTA by clearing output data latches
-001022 0E3F           00046     movlw   0x3F                ; Value used to initialize data direction
-001024 6E92           00047     movwf   TRISA               ; Set RA<5:0> as inputs  0011 1111
-001026 0E0F           00048     movlw   0x0F                ; Configure A/D for digital inputs 0000 1111
-001028 6EC1           00049     movwf   ADCON1              ;
-00102A 0E07           00050     movlw   0x07                ; Configure comparators for digital input
-00102C 6EB4           00051     movwf   CMCON
-00102E 6A81           00052     clrf    PORTB               ; Initialize PORTB by clearing output data latches
-001030 0E00           00053     movlw   0x00                ; Value used to initialize data direction
-001032 6E93           00054     movwf   TRISB               ; Set PORTB as output
-001034 6A82           00055     clrf    PORTC               ; Initialize PORTC by clearing output data latches
-001036 0E01           00056     movlw   0x01                ; Value used to initialize data direction
-001038 6E94           00057     movwf   TRISC
-                      00058    
-                      00059     
-                      00060     ; init timer
-00103A 0E83           00061     movlw   0x83
-00103C 6ED5           00062     movwf   T0CON               ;prescaler: 1/256
-                      00063     
-00103E 0EA0           00064     movlw   0xA0                ;0b11100000
-001040 6EF2           00065     movwf   INTCON
-                      00066 
-001042 966D           00067     bcf     UCON,3              ; to be sure to disable USB module
-001044 866F           00068     bsf     UCFG,3              ; disable internal USB transceiver
-                      00069 
+                      00037 
+                      00038 ;***********************************************************
+                      00039 ; Program Code Starts Here
+                      00040 ;***********************************************************
+                      00041 
+                      00042     ORG     0x1020              ; When debugging:0x020; when loading: 0x820
+                      00043 
+001020                00044 START
+                      00045 
+001020 6A80           00046     clrf    PORTA               ; Initialize PORTA by clearing output data latches
+001022 0E3F           00047     movlw   0x3F                ; Value used to initialize data direction
+001024 6E92           00048     movwf   TRISA               ; Set RA<5:0> as inputs  0011 1111
+001026 0E0F           00049     movlw   0x0F                ; Configure A/D for digital inputs 0000 1111
+001028 6EC1           00050     movwf   ADCON1              ;
+00102A 0E07           00051     movlw   0x07                ; Configure comparators for digital input
+00102C 6EB4           00052     movwf   CMCON
+00102E 6A81           00053     clrf    PORTB               ; Initialize PORTB by clearing output data latches
+001030 0E00           00054     movlw   0x00                ; Value used to initialize data direction
+001032 6E93           00055     movwf   TRISB               ; Set PORTB as output
+001034 6A82           00056     clrf    PORTC               ; Initialize PORTC by clearing output data latches
+001036 0E01           00057     movlw   0x01                ; Value used to initialize data direction
+001038 6E94           00058     movwf   TRISC
+                      00059    
+                      00060     
+                      00061     ; init timer
+00103A 0E83           00062     movlw   0x83
+00103C 6ED5           00063     movwf   T0CON               ;prescaler: 1/256
+                      00064     
+00103E 0EA0           00065     movlw   0xA0                ;0b11100000
+001040 6EF2           00066     movwf   INTCON
+                      00067 
+001042 966D           00068     bcf     UCON,3              ; to be sure to disable USB module
+001044 866F           00069     bsf     UCFG,3              ; disable internal USB transceiver
                       00070     
-001046                00071 motoridle
-001046 A082           00072     btfss   PORTC,0             ; switch 1 to control go/stop
-001048 EF?? F???      00073     goto    motoridle
-00104C A880           00074     btfss   PORTA,4             ; switch 2 to control auto/manual
-00104E EF?? F???      00075     goto    motormanual
-001052 EF?? F???      00076     goto    motorauto
-001056                00077 motorauto
-001056 A082           00078     btfss   PORTC,0
-001058 EF?? F???      00079     goto    motoridle
-00105C AA80           00080     btfss   PORTA,5             ; switch 3 to control left/right in auto
-00105E EC?? F???      00081     CALL    right
-001062 BA80           00082     btfsc   PORTA,5
-001064 EC?? F???      00083     CALL    left
-001068 EF?? F???      00084     goto    motorauto
-00106C                00085 motormanual
-00106C EF?? F???      00086     goto    motoridle
-001070                00087 right
-001070 8881           00088     bsf     PORTB,4
-001072 0012           00089     return
-                      00090     
-001074                00091 left
-001074 8A81           00092     bsf     PORTB,5
-001076 0012           00093     return
+001046 0E01           00071     movlw   0x01
+001048 6E25           00072     movwf   STATE
+                      00073 
+                      00074     
+                      00075 ;motoridle
+                      00076 ;    btfss   PORTC,0            ; switch 1 to control go/stop
+                      00077 ;    goto    motoridle
+                      00078 ;    btfss   PORTA,4            ; switch 2 to control auto/manual
+                      00079 ;    goto    motormanual
+                      00080 ;    goto    motorauto
+                      00081 ;motorauto
+                      00082 ;    btfss   PORTC,0
+                      00083 ;    goto    motoridle
+                      00084 ;    btfss   PORTA,5            ; switch 3 to control left/right in auto
+                      00085 ;    CALL    right
+                      00086 ;    btfss   PORTA,5
+                      00087 ;    goto    left
+                      00088 ;    goto    motorauto
+                      00089 ;motormanual
+                      00090 ;    goto    motoridle
+                      00091 ;right
+                      00092 ;    bsf            PORTB,4
+                      00093 ;    return
                       00094     
-001078                00095 choosestate
-001078 0E01           00096     movlw   0x01
-00107A 6225           00097     CPFSEQ  STATE               ;compare w with state, skip if equals
-                      00098     
-                      00099     
-00107C                00100 state1
-00107C 8881           00101     bsf     PORTB,4
-00107E 9A81           00102     bcf     PORTB,5
-                      00103     
-001080                00104 state2
-001080 8881           00105     bsf     PORTB,4
-001082 8A81           00106     bsf     PORTB,5
-                      00107     
-001084                00108 state3
-001084 9881           00109     bcf     PORTB,4
-001086 8A81           00110     bsf     PORTB,5
-                      00111     
-001088                00112 state4
-001088 9881           00113     bcf     PORTB,4
-00108A 9A81           00114     bcf     PORTB,5
-                      00115     
-                      00116 
-                      00117     
-                      00118     
-00108C                00119 idle
-00108C 9E81           00120     bcf     PORTB,7
-00108E A081           00121     btfss   PORTB,0
-001090 EF?? F???      00122     goto    idle
-001094 B082           00123     btfsc   PORTC,0
-001096 EF?? F???      00124     goto    idle
-00109A EF?? F???      00125     goto    rising
-                      00126     
-                      00127     
-00109E                00128 rising
-00109E A081           00129     btfss   PORTB,0
-0010A0 EF?? F???      00130     goto    rising
-0010A4 A082           00131     btfss   PORTC,0
-0010A6 EF?? F???      00132     goto    rising
-0010AA 9E81           00133     bcf     PORTB,7
-0010AC EF?? F???      00134     goto    falling
-                      00135     
-                      00136     
-0010B0                00137 falling    
-0010B0 8E81           00138     bsf     PORTB,7
-0010B2 0EFF           00139     movlw   0xFF
-0010B4 6E23           00140     movwf   COUNT2
-0010B6 0EFF           00141     movlw   0xFF
-0010B8 6E22           00142     movwf   COUNT
-0010BA EC?? F???      00143     CALL    Delay
-0010BE EF?? F???      00144     goto    idle
+00104A                00095 left
+                      00096     ;movlw   0x04
+00104A 6625           00097     TSTFSZ  STATE
+00104C EF?? F???      00098     goto    state2
+001050 0E01           00099     movlw   0x01
+001052 6625           00100     TSTFSZ  STATE
+001054 EF?? F???      00101     goto    state2
+001058 0E02           00102     movlw   0x02
+00105A 6625           00103     TSTFSZ  STATE
+00105C EF?? F???      00104     goto    state3
+001060 0E03           00105     movlw   0x03
+001062 6625           00106     TSTFSZ  STATE
+001064 EF?? F???      00107     goto    state4
+001068 0012           00108     return
+                      00109     
+00106A                00110 choosestate
+00106A 0E04           00111     movlw   0x04
+00106C 6225           00112     CPFSEQ  STATE               ;compare w with state, skip if equals
+00106E EF?? F???      00113     goto    choosestate2        ;second test
+001072 EF?? F???      00114     goto    state1
+                      00115 
+001076                00116 choosestate2
+001076 0E01           00117     movlw   0x01                
+001078 6225           00118     CPFSEQ  STATE               ;compare w with state, skip if equals
+00107A EF?? F???      00119     goto    choosestate3        ;second test
+00107E EF?? F???      00120     goto    state2
+                      00121    
+001082                00122 choosestate3
+001082 0E02           00123     movlw   0x02                
+001084 6225           00124     CPFSEQ  STATE               ;compare w with state, skip if equals
+001086 EF?? F???      00125     goto    choosestate4        ;second test
+00108A EF?? F???      00126     goto    state3
+                      00127 
+00108E                00128 choosestate4
+00108E 0E03           00129     movlw   0x03                
+001090 6225           00130     CPFSEQ  STATE               ;compare w with state, skip if equals
+001092 EF?? F???      00131     goto    choosestate         ;second test
+001096 EF?? F???      00132     goto    state4
+                      00133     
+00109A                00134 state1
+00109A BA80           00135     btfsc   PORTA,5
+00109C 9881           00136     bcf     PORTB,4
+00109E 8881           00137     bsf     PORTB,4
+0010A0 BA80           00138     btfsc   PORTA,5
+0010A2 8A81           00139     bsf     PORTB,5
+0010A4 9A81           00140     bcf     PORTB,5
+0010A6 0E01           00141     movlw   0x01
+0010A8 6E25           00142     movwf   STATE
+0010AA EC?? F???      00143     CALL    calldelay
+0010AE EF?? F???      00144     goto    choosestate
                       00145     
-                      00146     
-0010C2                00147 Delay
-0010C2 2E22           00148     DECFSZ  COUNT       ; Decrement count1
-0010C4 EF?? F???      00149     GOTO    Delay
-0010C8 2E23           00150     DECFSZ  COUNT2      ; Decrement count2
-0010CA EF?? F???      00151     GOTO    Delay    
-0010CE 0012           00152     return
+0010B2                00146 state2
+0010B2 8881           00147     bsf     PORTB,4
+0010B4 8A81           00148     bsf     PORTB,5
+0010B6 0E02           00149     movlw   0x02
+0010B8 6E25           00150     movwf   STATE
+0010BA EC?? F???      00151     CALL    calldelay
+0010BE EF?? F???      00152     goto    choosestate
                       00153     
-                      00154 
-0010D0                00155 inter_high
-0010D0 A4F2           00156     btfss   INTCON,TMR0IF
-0010D2 0010           00157     RETFIE
-0010D4 94F2           00158     BCF     INTCON,TMR0IF       ; clear the TMR0 interrupt flag
-0010D6 7081           00159     BTG     PORTB,0
-0010D8 0010           00160     RETFIE
-                      00161     
-0010DA                00162 inter_low
-0010DA 0000           00163     nop
-                      00164     
-0010DC 0010           00165     RETFIE
-                      00166 
+0010C2                00154 state3
+0010C2 BA80           00155     btfsc   PORTA,5
+0010C4 8881           00156     bsf     PORTB,4
+0010C6 9881           00157     bcf     PORTB,4
+0010C8 BA80           00158     btfsc   PORTA,5
+0010CA 9A81           00159     bcf     PORTB,5
+0010CC 8A81           00160     bsf     PORTB,5
+0010CE 0E03           00161     movlw   0x03
+0010D0 6E25           00162     movwf   STATE
+0010D2 EC?? F???      00163     CALL    calldelay
+0010D6 EF?? F???      00164     goto    choosestate
+                      00165     
+0010DA                00166 state4
+0010DA 9881           00167     bcf     PORTB,4
+0010DC 9A81           00168     bcf     PORTB,5
+0010DE 0E04           00169     movlw   0x04
+0010E0 6E25           00170     movwf   STATE
+0010E2 EC?? F???      00171     CALL    calldelay
+0010E6 EF?? F???      00172     goto    choosestate
+                      00173     
+                      00174 
+                      00175     
+                      00176     
+                      00177 ;idle
+                      00178 ;    bcf            PORTB,7
+                      00179 ;    btfss   PORTB,0
+                      00180 ;    goto    idle
+                      00181 ;    btfsc   PORTC,0
+                      00182 ;    goto    idle
+                      00183 ;    goto    rising
+                      00184 ;    
+                      00185 ;    
+                      00186 ;rising
+                      00187 ;    btfss   PORTB,0
+                      00188 ;    goto    rising
+                      00189 ;    btfss   PORTC,0
+                      00190 ;    goto    rising
+                      00191 ;    bcf            PORTB,7
+                      00192 ;    goto    falling
+                      00193 ;    
+                      00194 ;    
+                      00195 ;falling    
+                      00196 ;    bsf            PORTB,7
+                      00197 ;    movlw   0xFF
+                      00198 ;    movwf   COUNT2
+                      00199 ;    movlw   0xFF
+                      00200 ;    movwf   COUNT
+                      00201 ;    CALL    Delay
+                      00202 ;    goto    idle
+                      00203     
+0010EA                00204 calldelay
+0010EA 0EFF           00205     movlw   0xFF
+0010EC 6E23           00206     movwf   COUNT2
+0010EE 0EFF           00207     movlw   0xFF
+0010F0 6E22           00208     movwf   COUNT
+0010F2 0E0F           00209     movlw   0x0F        ; Change this to choose delay
+0010F4 6E26           00210     movwf   COUNT3
+0010F6 EC?? F???      00211     CALL    Delay
+0010FA 0012           00212     return
+                      00213     
+                      00214     
+0010FC                00215 Delay
+0010FC 2E22           00216     DECFSZ  COUNT       ; Decrement count1
+0010FE EF?? F???      00217     GOTO    Delay
+001102 2E23           00218     DECFSZ  COUNT2      ; Decrement count2
+001104 EF?? F???      00219     GOTO    Delay 
+001108 2E26           00220     DECFSZ  COUNT3      ; Decrement count3
+00110A EF?? F???      00221     GOTO    Delay       
+00110E 0012           00222     return
+                      00223     
+                      00224 
+001110                00225 inter_high
+001110 A4F2           00226     btfss   INTCON,TMR0IF
+001112 0010           00227     RETFIE
+001114 94F2           00228     BCF     INTCON,TMR0IF       ; clear the TMR0 interrupt flag
+001116 7081           00229     BTG     PORTB,0
+001118 0010           00230     RETFIE
+                      00231     
+00111A                00232 inter_low
+00111A 0000           00233     nop
+                      00234     
+00111C 0010           00235     RETFIE
+                      00236 
 Warning[205]: Found directive in column 1. (END)
-                      00167 END
-MPASM 5.63                   ASMTEMPLATE.ASM   11-28-2016  11:36:22         PAGE  2
+                      00237 END
+MPASM 5.66                   ASMTEMPLATE.ASM   11-30-2016  15:50:01         PAGE  2
 FSM
 
 SYMBOL TABLE
@@ -292,6 +362,7 @@ CMIF                              00000006
 CMIP                              00000006
 COUNT                             00000022
 COUNT2                            00000023
+COUNT3                            00000026
 CRC16EE                           00000002
 CRC16EF                           00000002
 CRC5EE                            00000001
@@ -326,7 +397,7 @@ DIR                               00000002
 DONE                              00000001
 D_A                               00000005
 D_NOT_A                           00000005
-Delay                             000010C2
+Delay                             000010FC
 ECCP1AS                           00000FB6
 ECCP1DEL                          00000FB7
 ECCPAS0                           00000004
@@ -956,21 +1027,18 @@ _WRTD_ON_6H                       0000007F
 _XINST_OFF_4L                     000000BF
 _XINST_ON_4L                      000000FF
 __18F2550                         00000001
-choosestate                       00001078
-falling                           000010B0
-idle                              0000108C
-inter_high                        000010D0
-inter_low                         000010DA
-left                              00001074
-motorauto                         00001056
-motoridle                         00001046
-motormanual                       0000106C
-right                             00001070
-rising                            0000109E
-state1                            0000107C
-state2                            00001080
-state3                            00001084
-state4                            00001088
+calldelay                         000010EA
+choosestate                       0000106A
+choosestate2                      00001076
+choosestate3                      00001082
+choosestate4                      0000108E
+inter_high                        00001110
+inter_low                         0000111A
+left                              0000104A
+state1                            0000109A
+state2                            000010B2
+state3                            000010C2
+state4                            000010DA
 
 Errors   :     0
 Warnings :     1 reported,     0 suppressed

@@ -9,6 +9,7 @@
 SAMPLE equ  0x21
 COUNT equ  0x22
 COUNT2 equ 0x23
+COUNT3 equ  0x26
 LEFT equ 0x24
 STATE equ 0x25
 
@@ -66,90 +67,158 @@ START
 
     bcf     UCON,3		; to be sure to disable USB module
     bsf     UCFG,3		; disable internal USB transceiver
+    
+    movlw   0x01
+    movwf   STATE
 
     
-motoridle
-    btfss   PORTC,0		; switch 1 to control go/stop
-    goto    motoridle
-    btfss   PORTA,4		; switch 2 to control auto/manual
-    goto    motormanual
-    goto    motorauto
-motorauto
-    btfss   PORTC,0
-    goto    motoridle
-    btfss   PORTA,5		; switch 3 to control left/right in auto
-    CALL    right
-    btfsc   PORTA,5
-    CALL    left
-    goto    motorauto
-motormanual
-    goto    motoridle
-right
-    bsf	    PORTB,4
-    return
+;motoridle
+;    btfss   PORTC,0		; switch 1 to control go/stop
+;    goto    motoridle
+;    btfss   PORTA,4		; switch 2 to control auto/manual
+;    goto    motormanual
+;    goto    motorauto
+;motorauto
+;    btfss   PORTC,0
+;    goto    motoridle
+;    btfss   PORTA,5		; switch 3 to control left/right in auto
+;    CALL    right
+;    btfss   PORTA,5
+;    goto    left
+;    goto    motorauto
+;motormanual
+;    goto    motoridle
+;right
+;    bsf	    PORTB,4
+;    return
     
 left
-    bsf	    PORTB,5
+    ;movlw   0x04
+    TSTFSZ  STATE
+    goto    state2
+    movlw   0x01
+    TSTFSZ  STATE
+    goto    state2
+    movlw   0x02
+    TSTFSZ  STATE
+    goto    state3
+    movlw   0x03
+    TSTFSZ  STATE
+    goto    state4
     return
     
 choosestate
-    movlw   0x01
+    movlw   0x04
     CPFSEQ  STATE		;compare w with state, skip if equals
-    
-    
+    goto    choosestate2	;second test
+    goto    state1
+
+choosestate2
+    movlw   0x01		
+    CPFSEQ  STATE		;compare w with state, skip if equals
+    goto    choosestate3	;second test
+    goto    state2
+   
+choosestate3
+    movlw   0x02		
+    CPFSEQ  STATE		;compare w with state, skip if equals
+    goto    choosestate4	;second test
+    goto    state3
+
+choosestate4
+    movlw   0x03		
+    CPFSEQ  STATE		;compare w with state, skip if equals
+    goto    choosestate		;second test
+    goto    state4
     
 state1
+    btfsc   PORTA,5
+    bcf	    PORTB,4
     bsf	    PORTB,4
+    btfsc   PORTA,5
+    bsf	    PORTB,5
     bcf	    PORTB,5
+    movlw   0x01
+    movwf   STATE
+    CALL    calldelay
+    goto    choosestate
     
 state2
     bsf	    PORTB,4
     bsf	    PORTB,5
+    movlw   0x02
+    movwf   STATE
+    CALL    calldelay
+    goto    choosestate
     
 state3
+    btfsc   PORTA,5
+    bsf	    PORTB,4
     bcf	    PORTB,4
+    btfsc   PORTA,5
+    bcf	    PORTB,5
     bsf	    PORTB,5
+    movlw   0x03
+    movwf   STATE
+    CALL    calldelay
+    goto    choosestate
     
 state4
     bcf	    PORTB,4
     bcf	    PORTB,5
+    movlw   0x04
+    movwf   STATE
+    CALL    calldelay
+    goto    choosestate
     
 
     
     
-idle
-    bcf	    PORTB,7
-    btfss   PORTB,0
-    goto    idle
-    btfsc   PORTC,0
-    goto    idle
-    goto    rising
+;idle
+;    bcf	    PORTB,7
+;    btfss   PORTB,0
+;    goto    idle
+;    btfsc   PORTC,0
+;    goto    idle
+;    goto    rising
+;    
+;    
+;rising
+;    btfss   PORTB,0
+;    goto    rising
+;    btfss   PORTC,0
+;    goto    rising
+;    bcf	    PORTB,7
+;    goto    falling
+;    
+;    
+;falling    
+;    bsf	    PORTB,7
+;    movlw   0xFF
+;    movwf   COUNT2
+;    movlw   0xFF
+;    movwf   COUNT
+;    CALL    Delay
+;    goto    idle
     
-    
-rising
-    btfss   PORTB,0
-    goto    rising
-    btfss   PORTC,0
-    goto    rising
-    bcf	    PORTB,7
-    goto    falling
-    
-    
-falling    
-    bsf	    PORTB,7
+calldelay
     movlw   0xFF
     movwf   COUNT2
     movlw   0xFF
     movwf   COUNT
+    movlw   0x0F	; Change this to choose delay
+    movwf   COUNT3
     CALL    Delay
-    goto    idle
+    return
     
     
 Delay
     DECFSZ  COUNT	; Decrement count1
     GOTO    Delay
     DECFSZ  COUNT2	; Decrement count2
-    GOTO    Delay    
+    GOTO    Delay 
+    DECFSZ  COUNT3	; Decrement count3
+    GOTO    Delay	
     return
     
 
